@@ -889,7 +889,7 @@ void createlogrename(const char from[1000], const char to[1000]) {
 3. fungsi `createlog` dan `createlogrename` ini akan ditambahkan ke setiap fungsi `syscall` yang dibuat sebelumnya. Agar semua `syscall` yang dilakukan oleh user dicatat dalam log yang sudah ditentukan sebelumnya.
 
 
-### Dokumentasi
+# Dokumentasi
 1. untuk eksekusi program
 <img src=https://cdn.discordapp.com/attachments/841192613917884436/853631510706782228/unknown.png>
 
