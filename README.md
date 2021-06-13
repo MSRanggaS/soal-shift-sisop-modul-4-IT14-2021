@@ -560,7 +560,7 @@ static int xmp_rmdir(const char *path) {
 ### Kendala yang dihadapi
 Masih belum mengerti tentang struct struct pada fuse dan belum paham cara memodifikasinya
 
-### Screnshoot
+
 
 ## soal 2
 Selain itu Sei mengusulkan untuk membuat metode enkripsi tambahan agar data pada komputer mereka semakin aman. Berikut rancangan metode enkripsi tambahan yang dirancang oleh Sei
@@ -758,7 +758,8 @@ void vigenere_dec(char *name) {
 ### Kendala yang dihadapi
 kelompok kami tidak dapat menyelesaikan nomor 2d dan e dikarenakan kami belum dapat memahami cara untuk menyelesaikan soal tersebut. sehingga kelompok kami hanya dapat mengerjakan 2a, b, c saja. dan kami Masih belum mengerti tentang struct struct pada fuse dan belum paham cara memodifikasinya
 
-## soal 3
+
+# soal 3
 Karena Sin masih super duper gabut akhirnya dia menambahkan sebuah fitur lagi pada filesystem mereka.
 a). Jika sebuah direktori dibuat dengan awalan “A_is_a_”, maka direktori tersebut akan menjadi sebuah direktori spesial
 
@@ -773,10 +774,10 @@ e). Pada direktori spesial semua nama file (tidak termasuk ekstensi) pada fuse a
 Contohnya jika pada direktori asli nama filenya adalah “FiLe_CoNtoH.txt” maka pada fuse akan menjadi “file_contoh.txt.1321”. 1321 berasal dari biner 10100101001.
 
 ### Penyelesaian
-<img src="/Bhaskaraa/SoalShiftSISOP20_modul4_T02/blob/master/Screenshot/S__11214850.jpg?raw=true" alt="S__11214850.jpg">
+<img src=https://github.com/Bhaskaraa/SoalShiftSISOP20_modul4_T02/blob/master/Screenshot/S__11214850.jpg>
 
 
-## soal 4
+# soal 4
 Untuk memudahkan dalam memonitor kegiatan pada filesystem mereka Sin dan Sei membuat sebuah log system dengan spesifikasi sebagai berikut.
 a). Log system yang akan terbentuk bernama “SinSeiFS.log” pada direktori home pengguna (/home/[user]/SinSeiFS.log). Log system ini akan menyimpan daftar perintah system call yang telah dijalankan pada filesystem.
 
@@ -887,5 +888,23 @@ void createlogrename(const char from[1000], const char to[1000]) {
 ```
 3. fungsi `createlog` dan `createlogrename` ini akan ditambahkan ke setiap fungsi `syscall` yang dibuat sebelumnya. Agar semua `syscall` yang dilakukan oleh user dicatat dalam log yang sudah ditentukan sebelumnya.
 
-### Kendala yang dihadapi
-### Screnshoot
+
+### Dokumentasi
+1. untuk eksekusi program
+<img src=https://cdn.discordapp.com/attachments/841192613917884436/853631510706782228/unknown.png>
+
+2. untuk membuat folder yang belum terenkripsi
+<img src=https://cdn.discordapp.com/attachments/841192613917884436/853631723014455336/unknown.png>
+<img src=https://cdn.discordapp.com/attachments/841192613917884436/853631795405127720/unknown.png>
+
+3. mengganti folder dengan nama AtoZ_
+<img src=https://cdn.discordapp.com/attachments/841192613917884436/853631993144410122/unknown.png>
+
+4. folder data_penting terenkripsi
+<img src=https://cdn.discordapp.com/attachments/841192613917884436/853632078187855952/unknown.png>
+
+5. mengubah folder AtoZ_ menjadi folder baru dan folder tersebut ke decrypt
+<img src=https://cdn.discordapp.com/attachments/841192613917884436/853632304290070569/unknown.png>
+
+6. sinseifs.log
+<img src=https://cdn.discordapp.com/attachments/841192613917884436/853632540483780638/unknown.png>
