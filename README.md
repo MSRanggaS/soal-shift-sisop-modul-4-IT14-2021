@@ -321,7 +321,9 @@ int main(int argc, char *argv[]) {
 }
 
 ```
- pertama kami membuat fungsi `atbash` untuk mengenkripsi direktori yang memiliki awalan `AtoZ_`. Metode `atbash` sendiri adalah suatu teknik enkripsi, yang dimana huruf alphabet diganti dengan kebalikan dari abjadnya. Sehingga jika nanti terdapat direktori dibuat/direname dengan nama `AtoZ_`, maka isi dari direktori itu akan terenkripsi
+
+## Penjelasan Code
+1. pertama kami membuat fungsi `atbash` untuk mengenkripsi direktori yang memiliki awalan `AtoZ_`. Metode `atbash` sendiri adalah suatu teknik enkripsi, yang dimana huruf alphabet diganti dengan kebalikan dari abjadnya. Sehingga jika nanti terdapat direktori yang dibuat/direname dengan nama `AtoZ_`, maka isi dari direktori itu akan terenkripsi.
 
 ```c
 void atbash(char *name) {
@@ -351,7 +353,7 @@ void atbash(char *name) {
 }
 
 ```
-Selanjutnya kami membuat fungsi dimana untuk cek enkripsi, yang berfungsi untuk mengecek apakah direktori yang diinputkan terdapat nama `AtoZ_` atau `RX_.` Jika direktorinya terdapat nama `AtoZ_` maka fungsi enkripsi atbash akan diterapkan pada direktpri tersebut. Dan jika `RX_` maka fungsi enkripsi rot13 dan atbash akan diterapkan pada direktori tersebut.
+2. Selanjutnya kami membuat fungsi dimana untuk cek enkripsi, yang berfungsi untuk mengecek apakah direktori yang diinputkan terdapat nama `AtoZ_` atau `RX_.` Jika direktorinya terdapat nama `AtoZ_` maka fungsi enkripsi atbash akan diterapkan pada direktpri tersebut. Dan jika terdapat `RX_` maka fungsi enkripsi rot13 dan atbash akan diterapkan pada direktori tersebut.
 
 ```c
 void check_encryption(char *path, const char *fpath) {
@@ -366,7 +368,7 @@ void check_encryption(char *path, const char *fpath) {
 }
 
 ```
-Untuk menjalankan fungsi yang bisa berjalan terutama fungsi listingnya kita perlu mendefinisikan fuse operations `getatt` untuk mendapatkan attribut dalam sebuah direktori, attribut sendiri adalah detail detail dari apapun dalam direktori. Jika fungsi getattr tidak didefinisikan maka fungsi fuse tidak akan bisa berjalan.
+3. Untuk menjalankan fungsi yang bisa berjalan terutama fungsi listingnya kita perlu mendefinisikan fuse operations `getatt` untuk mendapatkan attribut dalam sebuah direktori, attribut sendiri adalah detail detail dari apapun dalam direktori. Jika fungsi getattr tidak didefinisikan maka fungsi fuse tidak akan bisa berjalan.
 
 ```c
 static int xmp_getattr(const char *path, struct stat *st) {
@@ -394,7 +396,7 @@ static int xmp_getattr(const char *path, struct stat *st) {
 }
 
 ```
-dan kami disini membuat fungsi `readdir` untuk membaca direktori yang diminta. Fungsi ini juga menambahkan fungsi cek enkripsi yang didefinisikan sebelumnya untuk mengecek nama direktori yang akan dienkripsi
+4. selanjutnya kami disini membuat fungsi `readdir` yang digunakan untuk membaca direktori yang diminta. Fungsi ini juga menambahkan fungsi cek enkripsi yang didefinisikan sebelumnya untuk mengecek nama direktori yang akan dienkripsi
 
 ```c
 static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
@@ -451,7 +453,7 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_
 }
 
 ```
-lalu kami membuat fungsi `read` untuk mendapat data dari file yang dibuka. Fungsi ini untuk menambahkan fungsi cek enkripsi yang didefinisikan sebelumnya untuk mengecek nama direktori yang akan dienkripsi
+5. lalu kami membuat fungsi `read` yang digunakan untuk mendapat data dari file yang dibuka. Fungsi ini untuk menambahkan fungsi cek enkripsi yang didefinisikan sebelumnya untuk mengecek nama direktori yang akan dienkripsi
 
 ```c
 static int xmp_read(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi) {
@@ -489,7 +491,7 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset, stru
 }
 
 ```
-lalu kami membuat fungsi `rename` untuk merename folder sebelumnya menjadi nama folder yang diinginkan. Fungsi ini juga untuk menambahkan fungsi cek enkripsi yang didefinisikan sebelumnya untuk mengecek nama direktori yang akan dienkripsi. Selain itu, fungsi ini akan menambahkan fungsi `createlogrename` untuk dicatat dalam log. Fungsi ini akan dijelaskan lebih lanjut di no.4
+6. lalu kami membuat fungsi `rename` yang digunakan untuk merename folder sebelumnya menjadi nama folder yang diinginkan. Fungsi ini juga untuk menambahkan fungsi cek enkripsi yang didefinisikan sebelumnya untuk mengecek nama direktori yang akan dienkripsi. Selain itu, fungsi ini juga akan menambahkan fungsi `createlogrename` untuk dicatat dalam log. Fungsi ini akan dijelaskan lebih lanjut di no.4
 
 ```c
 static int xmp_rename(const char *old, const char *new) {
@@ -523,7 +525,7 @@ static int xmp_rename(const char *old, const char *new) {
 }
 
 ```
-Lalu kami membuat fungsi `mkdir`. Fungsi ini digunakan untuk membuat folder yang diinginkan. kemudian aktifitas ini akan dicatat dalam log dengan fungsi `createlog` yang akan dijelaskan lebih lanjut di no.4.
+7. Lalu kami membuat fungsi `mkdir`. Fungsi ini digunakan untuk membuat folder yang diinginkan. kemudian aktifitas ini akan dicatat dalam log dengan fungsi `createlog` yang akan dijelaskan lebih lanjut di no.4.
 
 ```c
 static int xmp_mkdir(const char *path, mode_t mode) {
