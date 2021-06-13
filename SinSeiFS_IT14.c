@@ -21,7 +21,7 @@ static const char *dirpath = "/home/Downloads";
 // Fungsi untuk membuat log
 void createlog(const char process[100], const char fpath[1000]) {
     char text[2000];
-    FILE *fp = fopen("/home/ifachn/SinSeiFS.log","a");
+    FILE *fp = fopen("/home/SinSeiFS.log","a");
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     
