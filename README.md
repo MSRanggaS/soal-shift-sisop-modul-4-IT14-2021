@@ -556,6 +556,8 @@ static int xmp_rmdir(const char *path) {
 ```
 
 ### Kendala yang dihadapi
+Masih belum mengerti tentang struct struct pada fuse dan belum paham cara memodifikasinya
+
 ### Screnshoot
 
 ## soal 2
@@ -752,7 +754,7 @@ void vigenere_dec(char *name) {
 
 
 ### Kendala yang dihadapi
-kelompok kami tidak dapat menyelesaikan nomor 2d dan e dikarenakan kami belum dapat memahami cara untuk menyelesaikan soal tersebut. sehingga kelompok kami hanya dapat mengerjakan 2a, b, c saja
+kelompok kami tidak dapat menyelesaikan nomor 2d dan e dikarenakan kami belum dapat memahami cara untuk menyelesaikan soal tersebut. sehingga kelompok kami hanya dapat mengerjakan 2a, b, c saja. dan kami Masih belum mengerti tentang struct struct pada fuse dan belum paham cara memodifikasinya
 
 ## soal 3
 Karena Sin masih super duper gabut akhirnya dia menambahkan sebuah fitur lagi pada filesystem mereka.
@@ -769,6 +771,7 @@ e). Pada direktori spesial semua nama file (tidak termasuk ekstensi) pada fuse a
 Contohnya jika pada direktori asli nama filenya adalah “FiLe_CoNtoH.txt” maka pada fuse akan menjadi “file_contoh.txt.1321”. 1321 berasal dari biner 10100101001.
 
 ### Penyelesaian
+<img src="/Bhaskaraa/SoalShiftSISOP20_modul4_T02/blob/master/Screenshot/S__11214850.jpg?raw=true" alt="S__11214850.jpg">
 
 
 ## soal 4
@@ -791,7 +794,96 @@ INFO::28052021-10:00:00:CREATE::/test.txt
 
 INFO::28052021-10:01:00:RENAME::/test.txt::/rename.txt
 
-### Penyelesaian
+## Penyelesaian
 ### Code
+
+```c
+// Fungsi untuk membuat log
+void createlog(const char process[100], const char fpath[1000]) {
+    char text[2000];
+    FILE *fp = fopen("/home/SinSeiFS.log","a");
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    
+    if (strcmp(process, "unlink") == 0) {
+        sprintf(text, "WARNING::%02d%02d%04d-%02d:%02d:%02d::UNLINK::%s\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec, fpath);
+    }
+    else if (strcmp(process, "mkdir") == 0) {
+        sprintf(text, "INFO::%02d%02d%04d-%02d:%02d:%02d::MKDIR::%s\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec, fpath);
+    }
+    else if (strcmp(process, "rmdir") == 0) {
+        sprintf(text, "WARNING::%02d%02d%04d-%02d:%02d:%02d::RMDIR::%s\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec, fpath);
+    }
+    for (int i = 0; text[i] != '\0'; i++) {
+            fputc(text[i], fp);
+    }
+    fclose (fp);
+}
+
+// Fungsi untuk membuat log khusus proses rename
+void createlogrename(const char from[1000], const char to[1000]) {
+    FILE *fp = fopen("/home/SinSeiFS.log", "a");
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    char text[2000];
+
+    sprintf(text, "INFO::%02d%02d%04d-%02d:%02d:%02d::RENAME::%s::%s\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec, from, to);
+    for (int i = 0; text[i] != '\0'; i++) {
+            fputc(text[i], fp);
+    }
+    fclose(fp);
+}
+
+```
+
+### Penjelasan Code
+
+1. Kami membuat fungsi `createlog` yang berfungsi untuk mencatat proses yang telah dilakukan user sebelumnya, seperti membuat atau menghapus direktori. dan disini kami membedakan levelnya. Ada level `info` dan `warning`. pada level `info` digunakan untuk mencatat `syscall` `rmdir` dan `unlink`. Sedangkan untuk level `info` untuk `syscall` yang lainnya.
+
+```c
+// Fungsi untuk membuat log
+void createlog(const char process[100], const char fpath[1000]) {
+    char text[2000];
+    FILE *fp = fopen("/home/SinSeiFS.log","a");
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    
+    if (strcmp(process, "unlink") == 0) {
+        sprintf(text, "WARNING::%02d%02d%04d-%02d:%02d:%02d::UNLINK::%s\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec, fpath);
+    }
+    else if (strcmp(process, "mkdir") == 0) {
+        sprintf(text, "INFO::%02d%02d%04d-%02d:%02d:%02d::MKDIR::%s\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec, fpath);
+    }
+    else if (strcmp(process, "rmdir") == 0) {
+        sprintf(text, "WARNING::%02d%02d%04d-%02d:%02d:%02d::RMDIR::%s\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec, fpath);
+    }
+    for (int i = 0; text[i] != '\0'; i++) {
+            fputc(text[i], fp);
+    }
+    fclose (fp);
+}
+
+```
+
+2. Lalu kami membuat fungsi `createlogrename` untuk proses rename log
+
+```c
+// Fungsi untuk membuat log khusus proses rename
+void createlogrename(const char from[1000], const char to[1000]) {
+    FILE *fp = fopen("/home/SinSeiFS.log", "a");
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    char text[2000];
+
+    sprintf(text, "INFO::%02d%02d%04d-%02d:%02d:%02d::RENAME::%s::%s\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec, from, to);
+    for (int i = 0; text[i] != '\0'; i++) {
+            fputc(text[i], fp);
+    }
+    fclose(fp);
+}
+
+```
+3. fungsi `createlog` dan `createlogrename` ini akan ditambahkan ke setiap fungsi `syscall` yang dibuat sebelumnya. Agar semua `syscall` yang dilakukan oleh user dicatat dalam log yang sudah ditentukan sebelumnya.
+
 ### Kendala yang dihadapi
 ### Screnshoot
